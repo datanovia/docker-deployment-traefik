@@ -102,13 +102,15 @@ The `deploy.sh` script automates the deployment process. Use the following optio
 
 ### Makefile Commands
 
-The `Makefile` simplifies deployment with predefined targets:
+The `Makefile` simplifies deployment and management with predefined targets:
 
 | Command           | Description                                                                                              |
 |-------------------|----------------------------------------------------------------------------------------------------------|
 | `make help`       | Display the help message and available commands.                                                         |
 | `make deploy`     | Deploy services for production using the default domain and email (or overridden variables).             |
 | `make deploy-test`| Deploy services for testing using the default domain and email (or overridden variables).                |
+| `make stop`       | Stop all running Docker Compose containers defined in the `docker-compose.yml`.                          |
+| `make start`      | Start existing Docker Compose containers without running full deployment steps.                          |
 
 #### Examples
 
@@ -122,11 +124,22 @@ The `Makefile` simplifies deployment with predefined targets:
    make deploy
    ```
 
-3. **Override Variables**:
+3. **Stop Running Services**:
+   ```bash
+   make stop
+   ```
+
+4. **Start Existing Containers**:
+   ```bash
+   make start
+   ```
+
+5. **Override Variables**:
    ```bash
    make deploy EMAIL=admin@example.com DOMAIN=prod.example.com
    make deploy-test EMAIL=test@example.com DOMAIN=test.example.com
    ```
+
 
 ---
 

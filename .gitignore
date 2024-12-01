@@ -26,3 +26,4 @@
 
 !.keep
 !deploy.sh
+!Makefile
