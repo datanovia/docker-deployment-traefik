@@ -89,13 +89,23 @@ The `deploy.sh` script automates the deployment process. Use the following optio
 #### Examples
 
 - **Testing Deployment**:
+    - Deploy Traefik in testing mode using `sample.docker-compose-test.yml` as template.
+    - Enable the service `whoami` for testing.
+    - Make sure to specify a valid email address and domain oor sub-domain name.
+
   ```bash
   ./deploy.sh --email contact@datanovia.com --domain-name dev.datanovia.com --test
   ```
 
+  Verify the deployment by accessing `https://dev.datanovia.com` in your browser.
+
 - **Production Deployment**:
+    - Deploy Traefik in production mode using `sample.docker-compose.yml` as template.
+    - The argument `--test` is not needed.
+    - Make sure to specify a valid email address and domain oor sub-domain name.
+
   ```bash
-  ./deploy.sh --email contact@datanovia.com --domain-name prod.datanovia.com
+  ./deploy.sh --email contact@datanovia.com --domain-name dev.datanovia.com
   ```
 
 ---
