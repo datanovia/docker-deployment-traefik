@@ -136,7 +136,7 @@ if [ "$IS_TEST" = true ]; then
     cp sample.docker-compose-test.yml docker-compose.yml || { echo "$RED_CROSS Failed to copy sample.docker-compose-test.yml"; exit 1; }
 else
     echo "Deploying in production mode. Copying production docker-compose file..."
-    cp sample.docker-compose-prod.yml docker-compose.yml || { echo "$RED_CROSS Failed to copy sample.docker-compose-prod.yml"; exit 1; }
+    cp sample.docker-compose.yml docker-compose.yml || { echo "$RED_CROSS Failed to copy sample.docker-compose.yml"; exit 1; }
 fi
 
 # Step 5: Update environment variables in '.env'

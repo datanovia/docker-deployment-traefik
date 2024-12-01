@@ -1,4 +1,4 @@
-# Træfik
+# Træfik Deployment With Automated Script
 
 <!-- markdownlint-disable line-length -->
 [![minimal-readme compliant](https://img.shields.io/badge/readme%20style-minimal-brightgreen.svg)](https://github.com/RichardLitt/standard-readme/blob/master/example-readmes/minimal-readme.md) [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active) <a href="https://liberapay.com/benz0li/donate"><img src="https://liberapay.com/assets/widgets/donate.svg" alt="Donate using Liberapay" height="20"></a>
@@ -56,8 +56,57 @@ To install docker and docker compose, follow the instructions for your platform:
   * Includes Docker Compose V2
 * [Post-installation steps for Linux](https://docs.docker.com/engine/install/linux-postinstall/)
 
-## Usage
+## Automated deployment
 
+The script `deploy.sh` automates the deployment of the Traefik container. 
+
+### For testing
+
+- Deploy Traefik in testing mode using `sample.docker-compose-test.ym` as template.
+- Enable the service `whoami` for testing.
+
+```bash
+ ./deploy.sh --email postmaster@mydomain.com --domain-name sub.mydomain.com --test
+```
+
+- Replace `postmaster@mydomain.com` with a valid email address.
+- Replace `sub.mydomain.com` with a valid subdomain of your domain, foe example `dev.datanovia.com`.
+
+### For production
+
+- Deploy Traefik in production mode using `sample.docker-compose.yml` as template.
+- The argument `--test` is not needed.
+
+```bash
+ ./deploy.sh --email postmaster@mydomain.com --domain-name sub.mydomain.com
+```
+
+Again, make sure to specify a valid email address and domain oor sub-domain name.
+
+### Help
+  
+```bash
+./deploy.sh --help
+```
+
+```
+Usage: ./deploy.sh [options]
+
+Options:
+  --email <email>         Valid email address to be used for ACME_EMAIL (default: postmaster@mydomain.com).
+  --domain-name <name>    Domain name to be used for deployment (e.g., dev.datanovia.com).
+  --test                  Deploy in testing mode (uses sample.docker-compose-test.yml).
+  --help                  Display this help message.
+
+Example:
+  ./deploy.sh --email your-email@example.com --domain-name dev.datanovia.com --test
+  ./deploy.sh --email your-email@example.com --domain-name prod.datanovia.com
+```
+
+
+## Manual deployment
+
+###  for production
 1. Create an external docker network named "webproxy":  
 
        docker network create webproxy
@@ -83,7 +132,7 @@ To install docker and docker compose, follow the instructions for your platform:
 `docker compose` commands must be run in the root directory of the project, i.e.
 where 'docker-compose.yml' is located!
 
-### Test
+### For testing
 
 1. Uncomment lines 43 to 55 in 'docker-compose.yml' to enable service "whoami"
    and configure as follows:
@@ -98,7 +147,7 @@ where 'docker-compose.yml' is located!
 3. Wait a bit and visit <http://whoami.mydomain.com> to confirm everything went
    fine.
 
-### Debugging
+## Debugging
 
 Use [docker logs](https://docs.docker.com/engine/reference/commandline/logs/) to
 see the output of the container:
