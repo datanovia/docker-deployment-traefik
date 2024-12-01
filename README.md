@@ -114,7 +114,7 @@ To verify the deployment, visit `https://sub.domain.com` in your browser.
 - The argument `--test` is not needed.
 
 ```bash
-./deploy.sh --email your-email@example.com --domain-name prod.datanovia.com
+./deploy.sh --email your-email@example.com --domain-name sub.domain.com
 ```
 
 Again, make sure to specify a valid email address and domain oor sub-domain name.
