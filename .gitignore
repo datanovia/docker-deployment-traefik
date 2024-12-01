@@ -25,3 +25,4 @@
 !/sample.docker-compose.yml
 
 !.keep
+!deploy.sh
