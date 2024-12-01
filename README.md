@@ -4,14 +4,13 @@
 [![minimal-readme compliant](https://img.shields.io/badge/readme%20style-minimal-brightgreen.svg)](https://github.com/RichardLitt/standard-readme/blob/master/example-readmes/minimal-readme.md) [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active) <a href="https://liberapay.com/benz0li/donate"><img src="https://liberapay.com/assets/widgets/donate.svg" alt="Donate using Liberapay" height="20"></a>
 <!-- markdownlint-enable line-length -->
 
-This fork enhances the original [Træfik deployment template](https://github.com/b-data/docker-deployment-traefik) with an **automated deployment script** (`deploy.sh`) for both **testing** and **production** environments. The script simplifies the setup process and reduces manual errors, enabling seamless deployment of Træfik and associated services.
+This fork enhances the original [Træfik deployment template](https://github.com/b-data/docker-deployment-traefik) with an **automated deployment script** (`deploy.sh`) for both **testing** and **production** environments, as well as a **Makefile** for streamlined execution.
 
+This project serves as a template to run [Træfik](https://hub.docker.com/_/traefik) v3.2 in a Docker container using Docker Compose.
 
-This project serves as a template to run [Træfik](https://hub.docker.com/_/traefik) v3.2 in a docker
-container using docker compose.
+The goal is to set up a TLS termination proxy for all Docker containers providing web services on a **single host**.
 
-The goal is to set up a TLS termination proxy for all Docker containers
-providing web services on a **single host**.
+---
 
 ## About Træfik
 
@@ -25,12 +24,10 @@ This project sets up Træfik to manage and secure web services hosted on a **sin
    - Træfik uses Let's Encrypt to automatically generate and renew SSL/TLS certificates, ensuring secure connections (via the HTTP challenge).
 
 2. **Middleware Support**:
-   Træfik provides essential middlewares for enhanced functionality and security:
-   - **RedirectScheme**: Automatically redirects HTTP traffic to HTTPS.
-   - **RateLimit**: Controls the rate of incoming requests to prevent abuse:
-     - Average: 100 requests per second.
-     - Burst: 50 additional requests in short bursts.
-   - **Headers**: Enforces HTTP Strict Transport Security (HSTS) with long durations for enhanced security.
+   - Træfik provides essential middlewares for enhanced functionality and security:
+     - **RedirectScheme**: Automatically redirects HTTP traffic to HTTPS.
+     - **RateLimit**: Controls the rate of incoming requests to prevent abuse.
+     - **Headers**: Enforces HTTP Strict Transport Security (HSTS) with long durations for enhanced security.
 
 3. **Customizable TLS Configurations**:
    - Offers three pre-configured TLS settings (modern, intermediate, and old) based on your compatibility requirements.
@@ -63,71 +60,73 @@ For more information, visit the official Træfik resources:
 
 ## Prerequisites
 
-For the HTTP challenge you require:
+1. **Host Requirements**:
+   - A publicly accessible host allowing connections on ports **80** and **443**.
+   - A DNS record pointing to the host for the domain you want to expose.
 
-* A publicly accessible host allowing connections on port 80 & 443.
-* A DNS record for the domain you want to expose pointing to this host.
+2. **Install Docker and Docker Compose**:
+   - Follow these guides:
+     - [Install Docker Engine](https://docs.docker.com/engine/install/#supported-platforms) (includes Docker Compose V2).
+     - [Post-installation steps for Linux](https://docs.docker.com/engine/install/linux-postinstall/).
 
-## Install
-
-Follow these steps to install Docker and Docker Compose:
-
-* [Install Docker Engine](https://docs.docker.com/engine/install/#supported-platforms)
-  * Includes Docker Compose V2
-* [Post-installation steps for Linux](https://docs.docker.com/engine/install/linux-postinstall/)
-
-
+---
 
 ## Usage
 
-The `deploy.sh` script handles the deployment process automatically.
+The deployment process can be handled via the `deploy.sh` script or the `Makefile`.
 
-### Options
+### Script Usage
+
+The `deploy.sh` script automates the deployment process. Use the following options:
 
 | Option               | Description                                                                                              |
 |----------------------|----------------------------------------------------------------------------------------------------------|
 | `--email <email>`    | Valid email address for Let's Encrypt (default: `postmaster@mydomain.com`).                              |
-| `--domain-name <name>` | Domain name to use for deployment (e.g., `sub.domain.com`).                                         |
+| `--domain-name <name>` | Domain name to use for deployment (e.g., `sub.domain.com`).                                             |
 | `--test`             | Deploy in testing mode, using `sample.docker-compose-test.yml`.                                          |
 | `--help`             | Display the help message and usage instructions.                                                        |
 
+#### Examples
 
-### Example Commands
+- **Testing Deployment**:
+  ```bash
+  ./deploy.sh --email contact@datanovia.com --domain-name dev.datanovia.com --test
+  ```
 
-#### Deploy in Testing Mode
-
-- Deploy Traefik in testing mode using `sample.docker-compose-test.yml` as template.
-- Enable the service `whoami` for testing.
-
-```bash
-./deploy.sh --email postmaster@mydomain.com --domain-name sub.domain.com --test
-```
-
-- Replace `postmaster@mydomain.com` with a valid email address.
-- Replace `sub.domain.com` with a valid domain or subdomain name.
-
-To verify the deployment, visit `https://sub.domain.com` in your browser.
-
-#### Deploy in Production Mode
-
-- Deploy Traefik in production mode using `sample.docker-compose.yml` as template.
-- The argument `--test` is not needed.
-
-```bash
-./deploy.sh --email your-email@example.com --domain-name sub.domain.com
-```
-
-Again, make sure to specify a valid email address and domain oor sub-domain name.
-
+- **Production Deployment**:
+  ```bash
+  ./deploy.sh --email contact@datanovia.com --domain-name prod.datanovia.com
+  ```
 
 ---
 
+### Makefile Commands
 
-### Display Help
-  
-```bash
-./deploy.sh --help
-```
+The `Makefile` simplifies deployment with predefined targets:
+
+| Command           | Description                                                                                              |
+|-------------------|----------------------------------------------------------------------------------------------------------|
+| `make help`       | Display the help message and available commands.                                                         |
+| `make deploy`     | Deploy services for production using the default domain and email (or overridden variables).             |
+| `make deploy-test`| Deploy services for testing using the default domain and email (or overridden variables).                |
+
+#### Examples
+
+1. **Testing Deployment**:
+   ```bash
+   make deploy-test
+   ```
+
+2. **Production Deployment**:
+   ```bash
+   make deploy
+   ```
+
+3. **Override Variables**:
+   ```bash
+   make deploy EMAIL=admin@example.com DOMAIN=prod.example.com
+   make deploy-test EMAIL=test@example.com DOMAIN=test.example.com
+   ```
 
 ---
 
@@ -162,23 +161,17 @@ Use the `docker logs` command to check the output of the Traefik container:
 docker logs webproxy-traefik-1
 ```
 
-
 ---
 
 ## Contributing
 
 PRs are welcome! Submit them to the forked repository. Contributions should align with the original project's goals and standards.
 
-This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md).
-
 ---
-
 
 ## License
 
 This project is licensed under the terms of the [MIT License](LICENSE).  
 Original template © 2019 b-data GmbH.  
 
-
 ---
-
