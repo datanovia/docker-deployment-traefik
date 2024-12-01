@@ -13,7 +13,7 @@ display_help() {
     echo
     echo "Options:"
     echo "  --email <email>         Valid email address to be used for ACME_EMAIL (default: postmaster@mydomain.com)."
-    echo "  --domain-name <name>    Domain name to be used for deployment (e.g., dev.datanovia.com)."
+    echo "  --domain-name <name>    Domain name to be used for deployment (e.g., sub.domain.com)."
     echo "  --test                  Deploy in testing mode (uses sample.docker-compose-test.yml)."
     echo "  --help                  Display this help message."
     echo
