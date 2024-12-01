@@ -182,16 +182,3 @@ Original template © 2019 b-data GmbH.
 
 ---
 
-
-## Support
-
-Community support: Open a new discussion
-[here](https://github.com/orgs/b-data/discussions).
-
-Commercial support: Contact b-data by [email](mailto:support@b-data.ch).
-
-## License
-
-Copyright © 2019 b-data GmbH
-
-Distributed under the terms of the [MIT License](LICENSE).
