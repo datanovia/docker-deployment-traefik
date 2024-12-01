@@ -95,6 +95,19 @@ ensure_containers_down() {
     else
         echo -e "$GREEN_CHECK No running Docker Compose containers detected."
     fi
+
+    # Remove orphan container "webproxy-whoami-1" if it exists
+    if docker ps --all --filter "name=webproxy-whoami-1" --format "{{.Names}}" | grep -q "webproxy-whoami-1"; then
+        echo "Orphan container 'webproxy-whoami-1' detected. Removing it..."
+        if docker rm -f webproxy-whoami-1; then
+            echo -e "$GREEN_CHECK Successfully removed orphan container 'webproxy-whoami-1'."
+        else
+            echo -e "$RED_CROSS Failed to remove orphan container 'webproxy-whoami-1'."
+            exit 1
+        fi
+    else
+        echo -e "$GREEN_CHECK No orphan container 'webproxy-whoami-1' detected."
+    fi
 }
 
 # ----------------------------------------------------------------------
